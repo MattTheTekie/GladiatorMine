@@ -389,7 +389,7 @@ class Server{
 	 * @return string
 	 */
 	public function getName() : string{
-		return "Genisys";
+		return "GladiatorMine";
 	}
 
 	/**
@@ -495,7 +495,7 @@ class Server{
 	 * @deprecated
 	 */
 	public function getServerName(){
-		return $this->getConfigString("motd", "Minecraft: PE Server");
+		return $this->getConfigString("motd", "GladiatorMine Server");
 	}
 
 	public function getServerUniqueId(){
@@ -678,7 +678,7 @@ class Server{
 	 * @return string
 	 */
 	public function getMotd(){
-		return $this->getConfigString("motd", "Minecraft: PE Server");
+		return $this->getConfigString("motd", "GladiatorMine Server");
 	}
 
 	/**
@@ -1759,13 +1759,10 @@ class Server{
 
 
 			$this->aboutstring = "\n
-		   §5PocketMine-iTX §3Genisys §fis a fork of PocketMine-MP, made by §5iTX Technologies LLC§f.
+		   §5Genisys §fis a fork of PocketMine-MP, made by the §fGladiatorMine Team.
 		   §fVersion: §6" . $this->getPocketMineVersion() . "
 		   §fTarget client Version: §d" . \pocketmine\MINECRAFT_VERSION . "
-		   §fLatest source codes are available on https://github.com/iTXTech/Genisys
-		   §fDonate link: http://pl.zxda.net/plugins/203.html
-		   §f如果你在免费使用本核心，希望你可以进入上面的链接捐赠给我们，这会成为我们前进的动力。
-		\n";
+		   §fLatest source codes are available on https://github.com/GladiatorMine/GladiatorMine\n";
 
 			$this->about();
 
@@ -1808,7 +1805,7 @@ class Server{
 
 			$this->logger->info("Loading server properties...");
 			$this->properties = new Config($this->dataPath . "server.properties", Config::PROPERTIES, [
-				"motd" => "Minecraft: PE Server",
+				"motd" => "GladiatorMine Server",
 				"server-port" => 19132,
 				"white-list" => false,
 				"announce-player-achievements" => true,
