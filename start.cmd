@@ -1,5 +1,5 @@
 @echo off
-TITLE Genisys server software for Minecraft: Pocket Edition
+TITLE GladiatorMine server software for Minecraft: Pocket Edition
 cd /d %~dp0
 
 if exist bin\php\php.exe (
@@ -21,7 +21,7 @@ if exist Genisys*.phar (
             if exist Genisys.phar (
                 set POCKETMINE_FILE=Genisys.phar
             ) else (
-		        echo "[ERROR] Couldn't find a valid Genisys installation."
+		        echo "[ERROR] Couldn't find a valid GladiatorMine installation."
 		        pause
 		        exit 8
 		    )
