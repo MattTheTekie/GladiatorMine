@@ -72,9 +72,9 @@ namespace pocketmine {
 	use pocketmine\utils\Utils;
 	use pocketmine\wizard\Installer;
 
-	const VERSION = "1.1dev";
+	const VERSION = "1.0dev";
 	const API_VERSION = "2.0.0";
-	const CODENAME = "Ikaros";
+	const CODENAME = "GladiatorMine";
 	const MINECRAFT_VERSION = "v0.14.2 alpha";
 	const MINECRAFT_VERSION_NETWORK = "0.14.2";
 	const GENISYS_API_VERSION = '1.7.2';
