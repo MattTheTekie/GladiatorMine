@@ -81,4 +81,4 @@ Most codes are made by PocketMine team and licensed under GPLv3. Some AI is prop
 * LevelDB support for Windows
 
 ### Servers
-(Follows are the test servers built by us. In fact other servers used Genisys may be more professional than ours.)
+(Follows are the test servers built by us. In fact other servers used GladiatorMine may be more professional than ours.)
