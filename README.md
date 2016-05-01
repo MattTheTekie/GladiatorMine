@@ -5,7 +5,7 @@
 ## English Version
 
 * One Core to rule anything
-* This core is an unofficial version of PocketMine-MP modified by DREAM STUDIO and iTX Technologies LLC.
+* This core is an unofficial version of PocketMine-MP modified by the GladiatorMine team.
 * GladiatorMine is only a fork of PocketMine-MP and all original codes are written by PocketMine Team.
 * Feel free to create a Pull Request or open an Issue. English and Chinese are both welcome. Use English to communicate with more people.
 
