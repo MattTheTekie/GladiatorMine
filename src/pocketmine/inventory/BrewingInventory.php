@@ -1,4 +1,4 @@
-<?php
+\<?php
 
 /*
  *
@@ -51,5 +51,6 @@ class BrewingInventory extends ContainerInventory{
 		parent::onSlotChange($index, $before);
 
 		$this->getHolder()->scheduleUpdate();
+		$this->getHolder()->updateSurface();
 	}
 }
