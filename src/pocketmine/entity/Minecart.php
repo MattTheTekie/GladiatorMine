@@ -18,197 +18,242 @@
  * @link https://mcper.cn
  *
  */
-
 namespace pocketmine\entity;
 
-use pocketmine\block\Block;
-use pocketmine\block\Rail;
-use pocketmine\item\Item as ItemItem;
+use pocketmine\network\protocol\PlayerActionPacket;
 use pocketmine\network\protocol\AddEntityPacket;
 use pocketmine\Player;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\network\protocol\EntityEventPacket;
-use pocketmine\math\Math;
+use pocketmine\item\Item as ItemItem;
 
-class Minecart extends Vehicle{
-	const NETWORK_ID = 84;
+class Minecart extends Vehicle
+{
 
-	const TYPE_NORMAL = 1;
-	const TYPE_CHEST = 2;
-	const TYPE_HOPPER = 3;
-	const TYPE_TNT = 4;
+    const NETWORK_ID = 84;
 
-	public $height = 0.9;
-	public $width = 1.1;
+    public $height = 0.9;
+    public $width = 1.1;
 
-	public $drag = 0.1;
-	public $gravity = 0.5;
+    public $drag = 0.1;
+    public $gravity = 0.5;
 
-	public $isMoving = false;
-	public $moveSpeed = 0.4;
+    public $isMoving = false;
+    public $moveSpeed = 0.4;
 
-	public function initEntity(){
-		$this->setMaxHealth(1);
-		$this->setHealth($this->getMaxHealth());
-		parent::initEntity();
-	}
+    public $isFreeMoving = false;
+    public $isLinked = false;
+    public $oldPosition = null;
+    public $hasDropped = false;
 
-	public function getName() : string{
-		return "Minecart";
-	}
+    /**
+     *
+     */
+    public function initEntity()
+    {
+        $this->setMaxHealth(1);
+        $this->setHealth($this->getMaxHealth());
+        parent::initEntity();
+    }
 
-	public function getType() : int{
-		return self::TYPE_NORMAL;
-	}
 
-	public function onUpdate($currentTick){
-		if($this->closed !== false){
-			return false;
-		}
+    /**
+     *
+     * @return unknown
+     */
+    public function getName()
+    {
+        return "Minecart";
+    }
 
-		$this->lastUpdate = $currentTick;
 
-		$this->timings->startTiming();
+    /**
+     *
+     * @param unknown $currentTick
+     * @return unknown
+     */
+    public function onUpdate($currentTick)
+    {
+        if ($this->closed !== false) {
+            return false;
+        }
 
-		$hasUpdate = false;
-		//parent::onUpdate($currentTick);
+        $this->lastUpdate = $currentTick;
 
-		if($this->isAlive()){
-			$movingType = $this->getLevel()->getServer()->minecartMovingType;
-			if($movingType == -1) return false;
-			elseif($movingType == 0){
-				$p = $this->getLinkedEntity();
-				if($p instanceof Player){
-					$this->motionX = -sin($p->getYaw() / 180 * M_PI);
-					$this->motionZ = cos($p->getYaw() / 180 * M_PI);
-				}
-				$target = $this->getLevel()->getBlock($this->add($this->motionX, 0, $this->motionZ)->round());
-				$target2 = $this->getLevel()->getBlock($this->add($this->motionX, 0, $this->motionZ)->floor());
-				if($target->getId() != ItemItem::AIR or $target2->getId() != ItemItem::AIR) $this->motionY = $this->gravity * 3;
-				else $this->motionY -= $this->gravity;
+        $this->timings->startTiming();
 
-				if($this->checkObstruction($this->x, $this->y, $this->z)){
-					$hasUpdate = true;
-				}
+        $hasUpdate = false;
 
-				$this->move($this->motionX, $this->motionY, $this->motionZ);
-				$this->updateMovement();
+        // if Minecart item is droped
+        if ($this->isLinked || $this->isAlive()) {
+            $this->motionY -= $this->gravity;
 
-				$friction = 1 - $this->drag;
+            if ($this->checkObstruction($this->x, $this->y, $this->z)) {
+                $hasUpdate = true;
+            }
 
-				if($this->onGround and (abs($this->motionX) > 0.00001 or abs($this->motionZ) > 0.00001)){
-					$friction = $this->getLevel()->getBlock($this->temporalVector->setComponents((int) floor($this->x), (int) floor($this->y - 1), (int) floor($this->z) - 1))->getFrictionFactor() * $friction;
-				}
+            $this->move($this->motionX, $this->motionY, $this->motionZ);
+            $this->updateMovement();
 
-				$this->motionX *= $friction;
-				$this->motionY *= 1 - $this->drag;
-				$this->motionZ *= $friction;
+            $friction = 1 - $this->drag;
 
-				if($this->onGround){
-					$this->motionY *= -0.5;
-				}
-			}elseif($movingType == 1){
-				$p = $this->getLinkedEntity();
-				if($p instanceof Player){
-					$rail = $this->getNearestRail();
-					if($rail !== null){
-						$this->setPosition($rail);
-						$motX = -sin($p->getYaw() / 180 * M_PI);
-						$motZ = cos($p->getYaw() / 180 * M_PI);
-						if($motX < 0) $motX = -0.5;
-						elseif($motX > 0) $motX = 0.5;
-						if($motZ < 0) $motZ = -0.5;
-						elseif($motZ > 0) $motZ = 0.5;
-						$block = $this->getLevel()->getBlock($this->add($motX, 0, $motZ)->round());
-						if($block instanceof Rail){
-							if($block->check($rail)){
-								if($block->y > $rail->y) $motY = 1.0;
-								else $motY = 0;
-								$f = sqrt(($motX ** 2) + ($motZ ** 2));
-								$this->yaw = (-atan2($motX, $motZ) * 180 / M_PI);
-								$this->pitch = (-atan2($f, $motY) * 180 / M_PI);
-								$this->move($motX, $motY, $motZ);
-							}
-						}
-						$this->updateMovement();
-					}
-				}
-				$hasUpdate = true;
-			}
-		}
+            if ($this->onGround and (abs($this->motionX) > 0.00001 or abs($this->motionZ) > 0.00001)) {
+                $friction = $this->getLevel()->getBlock($this->temporalVector->setComponents((int) floor($this->x), (int) floor($this->y - 1), (int) floor($this->z) - 1))->getFrictionFactor() * $friction;
+            }
 
-		$this->timings->stopTiming();
+            $this->motionX *= $friction;
+            $this->motionY *= 1 - $this->drag;
+            $this->motionZ *= $friction;
 
-		return $hasUpdate or !$this->onGround or abs($this->motionX) > 0.00001 or abs($this->motionY) > 0.00001 or abs($this->motionZ) > 0.00001;
-	}
+            if ($this->onGround) {
+                $this->motionY *= -0.5;
+            }
 
-	/**
-	 * @return Rail
-	 */
-	public function getNearestRail(){
-		$minX = Math::floorFloat($this->boundingBox->minX);
-		$minY = Math::floorFloat($this->boundingBox->minY);
-		$minZ = Math::floorFloat($this->boundingBox->minZ);
-		$maxX = Math::ceilFloat($this->boundingBox->maxX);
-		$maxY = Math::ceilFloat($this->boundingBox->maxY);
-		$maxZ = Math::ceilFloat($this->boundingBox->maxZ);
+            if ($this->isFreeMoving) {
+                $this->motionX = 0;
+                $this->motionZ = 0;
+                $this->isFreeMoving = false;
+            }
+        } else {
+            if ($this->isLinked == false) {
+                parent::onUpdate($currentTick);
+            }
+        }
 
-		$rails = [];
+        $this->timings->stopTiming();
 
-		for($z = $minZ; $z <= $maxZ; ++$z){
-			for($x = $minX; $x <= $maxX; ++$x){
-				for($y = $minY; $y <= $maxY; ++$y){
-					$block = $this->level->getBlock($this->temporalVector->setComponents($x, $y, $z));
-					if(in_array($block->getId(), [Block::RAIL, Block::ACTIVATOR_RAIL, Block::DETECTOR_RAIL, Block::POWERED_RAIL])) $rails[] = $block;
-				}
-			}
-		}
+        return $hasUpdate or !$this->onGround or abs($this->motionX) > 0.00001 or abs($this->motionY) > 0.00001 or abs($this->motionZ) > 0.00001;
+    }
 
-		$minDistance = PHP_INT_MAX;
-		$nearestRail = null;
-		foreach($rails as $rail){
-			$dis = $this->distance($rail);
-			if($dis < $minDistance){
-				$nearestRail = $rail;
-				$minDistance = $dis;
-			}
-		}
-		return $nearestRail;
-	}
 
-	public function spawnTo(Player $player){
-		$pk = new AddEntityPacket();
-		$pk->eid = $this->getId();
-		$pk->type = Minecart::NETWORK_ID;
-		$pk->x = $this->x;
-		$pk->y = $this->y;
-		$pk->z = $this->z;
-		$pk->speedX = 0;
-		$pk->speedY = 0;
-		$pk->speedZ = 0;
-		$pk->yaw = 0;
-		$pk->pitch = 0;
-		$pk->metadata = $this->dataProperties;
-		$player->dataPacket($pk);
+    /**
+     *
+     * @param Player  $player
+     */
+    public function spawnTo(Player $player)
+    {
+        $pk = new AddEntityPacket();
+        $pk->eid = $this->getId();
+        $pk->type = Minecart::NETWORK_ID;
+        $pk->x = $this->x;
+        $pk->y = $this->y;
+        $pk->z = $this->z;
+        $pk->speedX = 0;
+        $pk->speedY = 0;
+        $pk->speedZ = 0;
+        $pk->yaw = 0;
+        $pk->pitch = 0;
+        $pk->metadata = $this->dataProperties;
+        $player->dataPacket($pk);
 
-		parent::spawnTo($player);
-	}
+        parent::spawnTo($player);
+    }
 
-	/*public function attack($damage, EntityDamageEvent $source){
-		parent::attack($damage, $source);
 
-		if(!$source->isCancelled()){
-			$pk = new EntityEventPacket();
-			$pk->eid = $this->id;
-			$pk->event = EntityEventPacket::HURT_ANIMATION;
-			foreach($this->getLevel()->getPlayers() as $player){
-				$player->dataPacket($pk);
-			}
-		}
-	}
+    /**
+     *
+     * @param unknown           $damage
+     * @param EntityDamageEvent $source
+     */
+    public function attack($damage, EntityDamageEvent $source)
+    {
+        parent::attack($damage, $source);
 
-	public function getSaveId(){
-		$class = new \ReflectionClass(static::class);
-		return $class->getShortName();
-	}*/
+        if (!$source->isCancelled()) {
+            $pk = new EntityEventPacket();
+            $pk->eid = $this->id;
+            $pk->event = EntityEventPacket::HURT_ANIMATION;
+            foreach ($this->getLevel()->getPlayers() as $player) {
+                $player->dataPacket($pk);
+            }
+        }
+    }
+
+
+    /**
+     *
+     */
+    public function kill()
+    {
+        parent::kill();
+
+        foreach ($this->getDrops() as $item) {
+            $this->getLevel()->dropItem($this, $item);
+        }
+    }
+
+
+    /**
+     *
+     * @return unknown
+     */
+    public function getDrops()
+    {
+        if ($this->hasDropped == false) {
+            $this->hasDropped = true;
+            return [ItemItem::get(ItemItem::MINECART, 0, 1)];
+        } else {
+            return [];
+        }
+    }
+
+
+    /**
+     *
+     * @return unknown
+     */
+    public function getSaveId()
+    {
+        $class = new \ReflectionClass(static::class);
+        return $class->getShortName();
+    }
+
+
+    /**
+     *
+     * @param Player  $player
+     * @param unknown $playerAction
+     * @return unknown
+     */
+    public function onPlayerAction(Player $player, $playerAction)
+    {
+        if ($playerAction == 1) {
+            //pressed move button
+            $this->isLinked = true;
+            $this->isMoving = true;
+            $this->isFreeMoving = true;
+            $this->setHealth($this->getMaxHealth());
+            $player->linkEntity($this);
+        } elseif (in_array($playerAction, array(2, 3)) || $playerAction == PlayerActionPacket::ACTION_JUMP) {
+            //touched
+            $this->isLinked = false;
+            $this->isMoving = false;
+            $this->isFreeMoving = false;
+            $this->setLinked(0, $player);
+            $player->setLinked(0, $this);
+            return $this;
+        } elseif ($playerAction == 157) {
+            //playerMove
+            $this->isFreeMoving = true;
+            // try to get the bottom blockId, as Vector
+            $position = $this->getPosition();
+            $blockTemp = $this->level->getBlock($position);
+            if (in_array($blockTemp->getId(), array(27, 28, 66, 126))) {
+                //we are on rail
+                $connected = $blockTemp->check($blockTemp);
+                if (count($connected) >= 1) {
+                    foreach ($connected as $newPosition) {
+                        if ($this->oldPosition != $newPosition || count($connected) == 1) {
+                            $this->oldPosition = $position->add(0, 0, 0);
+                            $this->setPosition($newPosition);
+                            return $newPosition;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        return true;
+    }
 }
