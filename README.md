@@ -74,7 +74,7 @@ Most codes are made by PocketMine team and licensed under GPLv3. Some AI is prop
 * NOTICE: Please edit **genisys.yml** to enable all the features, including Redstone, MobAI, Nether and so on.
 
 ### Hosting Companies that used Gladiatormine lists:
-* wavserver.net
+* https://wavserver.net
 
 ### To-Do List
 * Improve Potions
