@@ -1,41 +1,18 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
-
-
-
-
 <script type="text/javascript" src="/static/js/analytics.js"></script>
-
 <script type="text/javascript">archive_analytics.values.server_name="wwwb-app7.us.archive.org";archive_analytics.values.server_ms=177;</script>
-
 <link type="text/css" rel="stylesheet" href="http://web.archive.org/static/css/banner-styles.css "/>
-
-
-
-
-
 <meta charset="utf-8">
-
 <meta name="viewport" content="user-scalable=yes">
-
 <meta name="keywords" content="PocketMine,PocketMine-MP,Minecraft,PE,Pocket Edition,MCPE,Online,Server,MP,PHP,Plugin,API,LGPL"/>
-
 <meta name="description" content="Minecraft: Pocket Edition server software with Plugins"/>
-
 <meta name="language" content="en"/>
-
 <meta http-equiv="X-UA-Compatible" content="chrome=1">
-
 <title>Get GladiatorMine</title>
-
 <link rel="shortcut icon" href="https://cloud.githubusercontent.com/assets/16944178/13729941/22a59b12-e941-11e5-801e-48b322fa29c2.jpg"/>
-
 <link href="http://www.pocketmine.net/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
-
 <script type="text/javascript">
 
 		  var _gaq = _gaq || [];
@@ -63,102 +40,51 @@
 		</script>
 
 </head>
-
 <style type="text/css">body{padding-top:20px;padding-bottom:20px;background:url(http://www.pocketmine.net/img/bg.png) repeat-x;}.header,.marketing,.footer{padding-left:15px;padding-right:15px;}.header{border-bottom:1px solid #e5e5e5;}.header h3{margin-top:0;margin-bottom:0;line-height:40px;padding-bottom:19px;}.footer{padding-top:19px;color:#777;border-top:1px solid #e5e5e5;}.container{min-width:730px;max-width:800px!important;}.container-narrow>hr{margin:30px 0;}.jumbotron{text-align:center;border-bottom:1px solid #e5e5e5;}.marketing{margin:40px 0;}.marketing p+h4{margin-top:28px;}.col-xs-4{padding-right:7px;padding-left:7px;}.panel-heading{padding:10px 7px;}</style>
-
 <body>
-
 <div class="container">
-
 <div class="jumbotron" id="jumbotron" style="padding-bottom:3px;">
-
 <img src="https://cloud.githubusercontent.com/assets/16944178/13729941/22a59b12-e941-11e5-801e-48b322fa29c2.jpg"/>
-
 <p class="lead"><strong>Server software for Minecraft: Pocket Edition</strong></p>
-
 <div style="height:150px;padding-top:5px;" class="well">
-
 <div style="text-align:left;position:relative;width:100%;"><em>Put <strong>no limits</strong> to your imagination.</em></div>
-
 <div style="text-align:right;position:relative;width:100%;"><em><strong>Control all</strong> aspects of gameplay.</em></div>
-
 <div style="text-align:center;position:relative;width:100%;"><em>Play on multiple worlds, <strong>for free</strong>.</em></div>
-
 </div>
-
 <div class="btn-group">
-
 <a style="font-size: 21px; padding: 14px 24px;" class="btn btn-lg btn-success" data-toggle="collapse" data-parent="pocketmine.net#jumbotron" href="https://github.com/GladiatorMine/GladiatorMine/"><span class="glyphicon glyphicon-download"></span> Get GladiatorMine
-
 </a>
-
 <a style="font-size: 21px; padding: 14px 24px;" class="btn btn-lg btn-success" data-toggle="collapse" data-parent="pocketmine.net#jumbotron" href="http://forums.gladiatormine.net"><span class="glyphicon glyphicon-download"></span> GladiatorMine Forums
-
-
 </a>
-
 <div class="btn-group">
-
 <a style="font-size: 21px; padding: 14px 24px;" class="btn btn-lg btn-success" data-toggle="collapse" data-parent="jumbotron" href="http://nmk.navhost.com/Plugins.html"><span class="glyphicon glyphicon-download"></span> Plugins
-
 </a>
-
 </small></small></div>
-
-<script src="/web/20131106143942js_/http://code.jquery.com/jquery.js" type="text/javascript"></script>
-
+<script src="https://web.archive.org/web/20131106143942js_/http://code.jquery.com/jquery.js" type="text/javascript"></script>
 <script src="js/bootstrap.min.js" type="text/javascript"></script>
-
 <script type="text/javascript">
-
 			function loadTags(response){
-
-				var version = response.data[0].name;
-
-				$("#stable .release").html("PocketMine-MP " + version).attr("href", "/web/20131106143942/https://github.com/PocketMine/PocketMine-MP/releases/" + version);
-
-				$("#stable .windows").attr("href", "/web/20131106143942/http://sourceforge.net/projects/pocketmine/files/windows/PocketMine-MP_Installer_" + version + ".exe");
-
-				$("#stable .linux").attr("href", "/web/20131106143942/http://sourceforge.net/projects/pocketmine/files/linux/PocketMine-MP_Installer_" + version + ".sh");
-
+				var version = response.data[0].name;				$("#stable .release").html("PocketMine-MP " + version).attr("href", "/web/20131106143942/https://github.com/PocketMine/PocketMine-MP/releases/" + version);
+				$("#stable .windows").attr("href", "https://web.archive.org/web/20131106143942/http://sourceforge.net/projects/pocketmine/files/windows/PocketMine-MP_Installer_" + version + ".exe");
+				$("#stable .linux").attr("href", "https://web.archive.org/web/20131106143942/http://sourceforge.net/projects/pocketmine/files/linux/PocketMine-MP_Installer_" + version + ".sh");
 			}
-
 			function loadCommits(response){
-
 				var sha1 = response.data[0].sha;
-
-				$("#dev a").attr("href", "/web/20131106143942/https://github.com/PocketMine/PocketMine-MP/archive/" + sha1 + ".zip").find(".sha").html(sha1.substring(0, 6));
-
+				$("#dev a").attr("href", "https://web.archive.org/web/20131106143942/https://github.com/PocketMine/PocketMine-MP/archive/" + sha1 + ".zip").find(".sha").html(sha1.substring(0, 6));
 				$("#devInfo").html('<em><small>' + response.data[0].commit.message + '</small></em><br/> by <em>' + response.data[0].commit.author.name + '</em><br/>' + response.data[0].commit.committer.date);
-
 			}
-
 			if(document.URL.indexOf("?thanks") != -1){
-
 				alert("Thanks for your donation!");
-
 			}
-
 		</script>
-
-<script src="/web/20131106143942js_/https://api.github.com/repos/PocketMine/PocketMine-MP/tags?callback=loadTags" type="text/javascript"></script>
-
-<script src="/web/20131106143942js_/https://api.github.com/repos/PocketMine/PocketMine-MP/commits?callback=loadCommits" type="text/javascript"></script>
-
+<script src="https://web.archive.org/web/20131106143942js_/https://api.github.com/repos/PocketMine/PocketMine-MP/tags?callback=loadTags" type="text/javascript"></script>
+<script src="https://web.archive.org/web/20131106143942js_/https://api.github.com/repos/PocketMine/PocketMine-MP/commits?callback=loadCommits" type="text/javascript"></script>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-
-<script type="text/javascript" src="/web/20131106143942js_/https://apis.google.com/js/plusone.js"></script>
-
+<script type="text/javascript" src="https://web.archive.org/web/20131106143942js_/https://apis.google.com/js/plusone.js"></script>
 <script type="text/javascript">
-
 /* <![CDATA[ */
-
 (function(){try{var s,a,i,j,r,c,l=document.getElementsByTagName("a"),t=document.createElement("textarea");for(i=0;l.length-i;i++){try{a=l[i].getAttribute("href");if(a&&"www.cloudflare.com/email-protection"==a.substr(7 ,35)){s='';j=43;r=parseInt(a.substr(j,2),16);for(j+=2;a.length-j&&a.substr(j,1)!='X';j+=2){c=parseInt(a.substr(j,2),16)^r;s+=String.fromCharCode(c);}j+=1;s+=a.substr(j,a.length-j);t.innerHTML=s.replace(/</g,"&lt;").replace(/>/g,"&gt;");l[i].setAttribute("href","mailto:"+t.value);}}catch(e){}}}catch(e){}})();
-
 /* ]]> */
-
 </script>
-
 </body>
-
 </html>
