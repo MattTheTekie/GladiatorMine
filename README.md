@@ -1,3 +1,5 @@
+This code is at least 7-13 years old from my archives.
+
 # GladiatorMine!!![picsart_03-13-05 28 27](https://cloud.githubusercontent.com/assets/16944178/13729941/22a59b12-e941-11e5-801e-48b322fa29c2.jpg)
 
 ## Contents
